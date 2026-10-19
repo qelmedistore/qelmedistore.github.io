@@ -34,6 +34,22 @@ a{color:inherit;text-decoration:none}
 .section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
 .section h2{font-size:clamp(24px,3vw,34px);letter-spacing:-.8px;margin:0}
 .search{width:min(100%,300px);padding:11px 13px;border:1px solid var(--line);border-radius:8px}
+
+/* Grid & Theme Styles */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+.grid.theme-modern {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+.grid.theme-compact {
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
 .product{min-width:0;border:1px solid var(--line);border-radius:13px;padding:12px;display:flex;flex-direction:column;background:#fff;cursor:pointer;transition:transform .15s,box-shadow .15s}
 .product:hover{box-shadow:0 4px 12px rgba(0,0,0,0.06)}
 .product img,.placeholder{width:100%;aspect-ratio:4/4.5;object-fit:cover;border-radius:9px;background:#f0f1f5}
@@ -74,8 +90,22 @@ a{color:inherit;text-decoration:none}
 .modal-info .price{font-size:20px;margin:8px 0}
 .modal-info p{color:#666;font-size:14px;line-height:1.6;margin:0 0 15px}
 .modal-actions{display:flex;gap:10px;margin-top:20px;justify-content:flex-end}
-@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}}
-@media(max-width:580px){.site-header{flex-direction:column;align-items:flex-start;padding:12px 16px;gap:8px}.nav{width:100%;justify-content:space-between;gap:6px}.grid{grid-template-columns:1fr;gap:16px}.modal-overlay{padding:0}.modal-card{width:100%!important;height:100%!important;max-height:100vh!important;border-radius:0!important;display:flex!important;flex-direction:column!important;padding:24px 16px!important}.modal-card-product{display:flex!important;flex-direction:column!important}.modal-img-wrap img{max-height:260px}.modal-close{top:12px;right:12px}}
+
+@media(max-width:900px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .grid.theme-modern{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid.theme-compact{grid-template-columns:1fr}
+}
+@media(max-width:580px){
+  .site-header{flex-direction:column;align-items:flex-start;padding:12px 16px;gap:8px}
+  .nav{width:100%;justify-content:space-between;gap:6px}
+  .grid, .grid.theme-modern, .grid.theme-compact{grid-template-columns:1fr;gap:16px}
+  .modal-overlay{padding:0}
+  .modal-card{width:100%!important;height:100%!important;max-height:100vh!important;border-radius:0!important;display:flex!important;flex-direction:column!important;padding:24px 16px!important}
+  .modal-card-product{display:flex!important;flex-direction:column!important}
+  .modal-img-wrap img{max-height:260px}
+  .modal-close{top:12px;right:12px}
+}
 </style>
 </head>
 <body>
@@ -162,7 +192,8 @@ function renderApp(){
     $("standaloneRegForm").onsubmit = e => { e.preventDefault(); localStorage.setItem("loginuser", $("rEmail").value.trim()); view = "shop"; renderApp(); showModal({title:"Success", message:"Account created and signed in!"}); };
     $("toLog").onclick = e => { e.preventDefault(); view = "login"; renderApp(); };
   } else {
-    $("mainContent").innerHTML = '<section class="hero" id="home"><div class="eyebrow">Welcome to our store</div><h1 id="headline">'+escapeHTML(st.tagline)+'</h1><p id="intro">'+escapeHTML(st.description)+'</p><a class="btn" href="#shop" data-shop-btn>Explore collection ↓</a></section><section class="section" id="shop"><div class="section-head"><div><h2>Shop collection</h2></div><input class="search" id="search" type="search" placeholder="Search products…"></div><div class="grid" id="products"></div></section>';
+    let gridClass = "grid theme-" + (st.theme || "minimal");
+    $("mainContent").innerHTML = '<section class="hero" id="home"><div class="eyebrow">Welcome to our store</div><h1 id="headline">'+escapeHTML(st.tagline)+'</h1><p id="intro">'+escapeHTML(st.description)+'</p><a class="btn" href="#shop" data-shop-btn>Explore collection ↓</a></section><section class="section" id="shop"><div class="section-head"><div><h2>Shop collection</h2></div><input class="search" id="search" type="search" placeholder="Search products…"></div><div class="'+gridClass+'" id="products"></div></section>';
     renderProducts();
     $("search").addEventListener("input", renderProducts);
   }
@@ -179,12 +210,6 @@ function renderProducts(){
   if(!$("products")) return;
   const q = $("search").value.trim().toLowerCase();
   const shown = products.filter(p => (p.name + " " + (p.description||"")).toLowerCase().includes(q));
-  
-  let gridStyle = "display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px;";
-  if (st.theme === "modern") gridStyle = "display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px;";
-  if (st.theme === "compact") gridStyle = "display:grid; grid-template-columns: 1fr; gap: 12px;";
-  const gridEl = $("products").parentElement.querySelector(".grid") || $("products");
-  gridEl.style.cssText = gridStyle;
 
   $("products").innerHTML = shown.map(p => {
     let priceHtml = '<div class="price">'+money(p.price)+'</div>';
