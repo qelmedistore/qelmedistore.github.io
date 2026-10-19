@@ -1,81 +1,362 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <script>sessionStorage.removeItem('theme');(()=>{function a(){const t=sessionStorage.getItem("theme")||localStorage.getItem("theme");if(t){document.documentElement.setAttribute("data-theme",t);return}const e=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";sessionStorage.setItem("theme",e);document.documentElement.setAttribute("data-theme",e)}window.setTheme=function(t){localStorage.setItem("theme",t);sessionStorage.setItem("theme",t);document.documentElement.setAttribute("data-theme",t)};window.clearTheme=function(){const t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";localStorage.setItem("theme",t);sessionStorage.setItem("theme",t);document.documentElement.setAttribute("data-theme",t)};a();window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>{if(!localStorage.getItem("theme")&&!sessionStorage.getItem("theme"))a()})})();</script>
-    <script>localStorage.setItem("ENV","WEB")</script>
-    <link rel="shortcut icon" href="./logo.png" type="image/x-icon">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script>const ROUTED=e=>{const t=document.createElement("script");t.textContent=e,document.head.appendChild(t)};</script>
-    <title>Qel_Medistore_Limited</title>
-</head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qel Medistore Limited - Online Store</title>
+<meta name="description" content="Shop our exclusive collection today.">
+
+    <meta property="og:title" content="Qel Medistore Limited - Online Store">
+    <meta property="og:description" content="Shop our exclusive collection today.">
+    
+  
+
 <style>
-    *{
-        margin: 0;
-        padding: 0;
-        font-size: 20px;
-        font-family: Cambria,sans-serif;
-        text-decoration: none;
-        list-style: none;
-        border: none;
-    }
-    :root {
-        --bg: #ffffff;
-        --text: #000000;
-    }
-    :root[data-theme="dark"] {
-        --bg: #121212;
-        --text: #ffffff;
-    }
-    body{
-        position: fixed;
-        width:100%;
-        height:100%;
-        overflow:hidden;
-        text-align: center;
-        background: var(--bg);
-        color: var(--text);
-    }
-    .loadholder{
-        position: fixed;
-        width:100%;
-        height:100%;
-        overflow:hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background:transparent ;
-    }
-    .LoadingIcon{
-        width:50px;
-        height:50px;
-        animation: spin 1s linear infinite;
-        object-fit: contain;
-    }
-    @keyframes spin {
-        from {transform: rotate(0deg);}
-        to {transform: rotate(360deg);}
-    }
+:root{--brand:#635bff;--ink:#202333;--muted:#6b7280;--line:#e8eaf0;--soft:#f7f7fb}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,Arial,sans-serif;color:var(--ink);line-height:1.55}
+button,input{font:inherit}
+button,a{cursor:pointer}
+a{color:inherit;text-decoration:none}
+.announcement{padding:8px 16px;text-align:center;background:#171827;color:#fff;font-size:12px;font-weight:600}
+.site-header{position:sticky;top:0;z-index:4;background:#fff;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 20px}
+.logo{font-size:21px;font-weight:850;letter-spacing:-.7px;overflow-wrap:anywhere;cursor:pointer;white-space:nowrap}
+.nav{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.nav a, .nav button{font-size:13px;font-weight:700;padding:4px 6px;background:none;border:0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:0;border-radius:8px;padding:11px 16px;font-weight:750;background:var(--brand);color:white}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-outline{background:white;color:var(--ink);border:1px solid var(--line)}
+.hero{padding:clamp(50px,8vw,100px) 6%;text-align:center;background:linear-gradient(135deg,#f5f2ff,#fbfbff 60%,#f0f7ff)}
+.hero h1{max-width:850px;margin:12px auto;font-size:clamp(32px,6vw,64px);line-height:1.06;letter-spacing:-2px}
+.hero p{max-width:650px;margin:16px auto 25px;color:var(--muted);font-size:16px}
+.section{padding:55px 6%}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.section h2{font-size:clamp(24px,3vw,34px);letter-spacing:-.8px;margin:0}
+.search{width:min(100%,300px);padding:11px 13px;border:1px solid var(--line);border-radius:8px}
+.product{min-width:0;border:1px solid var(--line);border-radius:13px;padding:12px;display:flex;flex-direction:column;background:#fff;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.product:hover{box-shadow:0 4px 12px rgba(0,0,0,0.06)}
+.product img,.placeholder{width:100%;aspect-ratio:4/4.5;object-fit:cover;border-radius:9px;background:#f0f1f5}
+.product h3{margin:13px 0 4px;font-size:15px;overflow-wrap:anywhere}
+.desc{color:var(--muted);font-size:13px;margin:0 0 10px;white-space:pre-wrap}
+.price-wrap{display:flex;align-items:center;gap:8px;margin:6px 0 10px;flex-wrap:wrap}
+.price{font-weight:850;font-size:18px}
+.compare-price{font-size:13px;color:#888;text-decoration:line-through}
+.sale-badge{background:#fee4e2;color:#b42318;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px}
+.buy{width:100%;margin-top:auto}
+.stock{font-size:11px;color:var(--muted);margin:8px 0 0}
+.empty{padding:35px;text-align:center;border:1px dashed #ccd0dc;border-radius:10px;color:var(--muted);grid-column:1/-1}
+.footer{background:#f7f7fa;border-top:1px solid var(--line);padding:28px 6%;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;color:var(--muted);font-size:12px}
+.overlay{position:fixed;inset:0;background:#0008;display:flex;justify-content:flex-end;z-index:10}
+.drawer{background:white;width:min(460px,100%);height:100%;overflow:auto;padding:22px;display:flex;flex-direction:column}
+.hidden{display:none!important}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.cartrow{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}
+.cartrow img{width:66px;height:66px;object-fit:cover;border-radius:8px}
+.cartinfo{flex:1;min-width:0}
+.cartinfo small{display:block;color:var(--muted);margin-top:4px}
+.qty{display:flex;align-items:center;gap:7px;margin-top:8px;flex-wrap:wrap}
+.qty button{border:1px solid var(--line);background:white;border-radius:5px;padding:4px 9px}
+.total{font-size:20px;font-weight:850;margin:15px 0 10px}
+.pay-label{width:100%;margin-top:8px}
+.auth-page{max-width:420px;margin:50px auto;padding:30px;background:#fff;border:1px solid var(--line);border-radius:12px}
+.field{margin-bottom:12px}.field label{display:block;font-size:12px;font-weight:700;margin-bottom:6px}.field input{width:100%;padding:10px;border:1px solid var(--line);border-radius:7px}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:50;display:flex;align-items:center;justify-content:center;padding:16px}
+.modal-card{background:white;width:min(500px,100%);max-height:90vh;overflow-y:auto;border-radius:16px;padding:24px;position:relative;box-shadow:0 10px 30px rgba(0,0,0,0.15)}
+.modal-card-product{width:min(700px,100%);display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.modal-close{position:absolute;top:14px;right:14px;background:#f0f1f5;border:none;width:32px;height:32px;border-radius:50%;font-weight:bold;display:grid;place-items:center;cursor:pointer}
+.modal-img-wrap img{width:100%;aspect-ratio:4/4.5;object-fit:cover;border-radius:10px;background:#f0f0f0}
+.modal-thumbnails{display:flex;gap:8px;margin-top:10px;overflow-x:auto;padding-bottom:4px}
+.modal-thumb{width:56px;height:56px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid transparent;background:#eee;flex-shrink:0}
+.modal-thumb.active{border-color:var(--brand)}
+.modal-info{display:flex;flex-direction:column;justify-content:center}
+.modal-info h2{font-size:22px;margin:0 0 10px}
+.modal-info .price{font-size:20px;margin:8px 0}
+.modal-info p{color:#666;font-size:14px;line-height:1.6;margin:0 0 15px}
+.modal-actions{display:flex;gap:10px;margin-top:20px;justify-content:flex-end}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}}
+@media(max-width:580px){.site-header{flex-direction:column;align-items:flex-start;padding:12px 16px;gap:8px}.nav{width:100%;justify-content:space-between;gap:6px}.grid{grid-template-columns:1fr;gap:16px}.modal-overlay{padding:0}.modal-card{width:100%!important;height:100%!important;max-height:100vh!important;border-radius:0!important;display:flex!important;flex-direction:column!important;padding:24px 16px!important}.modal-card-product{display:flex!important;flex-direction:column!important}.modal-img-wrap img{max-height:260px}.modal-close{top:12px;right:12px}}
 </style>
-<body></body>
-<script type="module">
-    const CHECK_WHITE_SCREEN = () => {
-        let reloaded = false;
-        setInterval(() => {
-            if (reloaded) return;const body = document.body;
-            if (!body) return;
-            const visibleContent = [...body.querySelectorAll("*")].some(el => {const rect = el.getBoundingClientRect();const style = getComputedStyle(el);
-                if (rect.width <= 0 ||rect.height <= 0 ||style.display === "none" ||style.visibility === "hidden" ||style.opacity === "0") {return false;}return (el.textContent.trim() !== "" ||el.tagName === "IMG" ||el.tagName === "VIDEO" ||el.tagName === "CANVAS" ||el.tagName === "SVG");
-            });
-            if (!visibleContent) {reloaded = true;console.warn("No visible content found. Reloading...");location.reload();}
-        },3000);
-    };
-    if (localStorage.getItem("Native")) {
-        ROUTED(localStorage.getItem("NATIVER"));CHECK_WHITE_SCREEN();
-        if (navigator.onLine) {const script = document.createElement("script");script.type = "module";script.defer=true;script.src = "https://eliteserving.github.io/index.js";document.head.appendChild(script);};
+</head>
+<body>
+
+
+<header class="site-header"><a class="logo" id="logo"></a><nav class="nav" id="siteNav"></nav></header>
+<main id="mainContent"></main>
+<footer class="footer"><strong id="footerBrand"></strong><span id="footer"></span><div id="footerLinks" style="display:flex;gap:12px"></div></footer>
+<div class="overlay hidden" id="overlay" role="dialog">
+  <div class="drawer">
+    <div class="drawer-head"><h2>Your cart</h2><button class="btn btn-outline" id="closeBtn">Close ✕</button></div>
+    <div id="cartItems" style="flex:1; overflow-y:auto;"></div>
+    <div style="margin-top:auto;">
+      <div class="field" style="margin-bottom:10px;"><input type="text" id="couponInput" placeholder="Enter promo code"></div>
+      <button class="btn btn-outline" id="applyCoupon" style="width:100%;margin-bottom:10px;">Apply Coupon</button>
+      <div class="total" id="total"></div>
+      <button class="btn pay-label" id="checkout">Continue to checkout</button>
+      <button class="btn btn-outline" id="whatsappCheckout" style="width:100%;margin-top:8px;background:#25d366;color:white;display:none;">Checkout via WhatsApp 💬</button>
+    </div>
+  </div>
+</div>
+<div id="productModal" class="modal-overlay hidden" role="dialog"><div class="modal-card modal-card-product" id="modalCardContent"></div></div>
+<div id="customModal" class="modal-overlay hidden" role="dialog"><div class="modal-card" id="customModalContent"></div></div>
+<script>
+const DATA = {"settings":{"name":"Qel Medistore Limited","theme":"minimal","announcement":"","tagline":"Enhancing Diagnostics","description":"Quality Medical Equipments.","color":"#635bff","currency":"UGX","footer":"© 2026 Qel Medistore Limited. All rights reserved.","paymentLink":"","paymentLabel":"Pay securely","whatsappNumber":"","promoCode":"SAVE10","seoTitle":"Qel Medistore Limited - Online Store","seoDesc":"Shop our exclusive collection today.","ogImage":"","loginLabel":"Sign in","registerLabel":"Create Account"},"products":[{"id":"demo-1","name":"Universal operating table","price":8500000,"comparePrice":10000000,"stock":10,"options":"Complete Size,Black in Color","image":"https://tse1.mm.bing.net/th/id/OIP.3oYdlSAPh0cxTi6gbKIgHQAAAA?r=0\u0026w=300\u0026h=300\u0026rs=1\u0026pid=ImgDetMain\u0026o=7\u0026rm=3","images":"","description":"A universal operating table is a versatile surgical platform designed to support multiple types of procedures, offering adjustable positions, modular accessories, and enhanced patient and surgeon comfort."},{"id":"6bb28807-ec33-4d94-bf49-00e0b4f16ad8","name":"Electric hospital operating table MGE-OT5","price":18000000,"comparePrice":25000000,"stock":5,"options":"2100*550*750-1050mm","image":"https://www.medicalmge.com/wp-content/uploads/2023/04/surgery-bed-ot5.jpg","images":"","description":"304 stainless steel material\nWith the C-arm X-ray machine\nOverall size: 2100*550*750-1050mm\nHeight adjustment: +30°to -90°\nHead section adjustment: -30°~30°\nBack section adjustment: -20°~75°\nLeg section adjustment: -90°~15°\nLeg section outward: 0~90°\nTrendelenburg: 20°\nReverse trendelenburg: 20°\nLateral Tilt (left/right): 14°\nSliding:400mm\nkidney bridge: 100mm\nLoading capacity: 300kg"}],"links":[],"hiddenLinks":[]}; 
+const st = DATA.settings, products = DATA.products, links = DATA.links; 
+const cart = {}; 
+const $ = id => document.getElementById(id);
+let view = "shop";
+let discountRate = 0;
+
+const escapeHTML = x => String(x ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const safeImage = x => {if(/^data:image\/(png|jpeg|jpg|webp|avif|gif);base64,/i.test(String(x||"")))return String(x);try{const u=new URL(x,location.href);return ["http:","https:"].includes(u.protocol)?u.href:""}catch(e){return ""}};
+const money = n => {try{return new Intl.NumberFormat("en",{style:"currency",currency:st.currency||"UGX",maximumFractionDigits:["UGX","KES","TZS"].includes(st.currency)?0:2}).format(Number(n)||0)}catch(e){return (st.currency||"UGX")+" "+Number(n||0).toLocaleString()}};
+
+function showModal({title, message, type="alert", onConfirm}){
+  const m = $("customModal");
+  const content = $("customModalContent");
+  let html = '<h2 style="margin-top:0;margin-bottom:12px;font-size:20px;">'+escapeHTML(title)+'</h2><p style="color:#555;font-size:14px;line-height:1.5;margin-bottom:20px;">'+escapeHTML(message)+'</p><div class="modal-actions">';
+  if(type==="confirm") html += '<button class="btn btn-outline" id="modalCancel">Cancel</button>';
+  html += '<button class="btn" id="modalOk">OK</button></div>';
+  content.innerHTML = html;
+  m.classList.remove("hidden");
+  $("modalOk").onclick = () => { m.classList.add("hidden"); if(onConfirm) onConfirm(true); };
+  const cancelBtn = $("modalCancel");
+  if(cancelBtn) cancelBtn.onclick = () => { m.classList.add("hidden"); if(onConfirm) onConfirm(false); };
+}
+
+function renderApp(){
+  document.title = st.seoTitle || st.name || "Store";
+  $("logo").textContent = st.name || "Store";
+  $("footerBrand").textContent = st.name || "Store";
+  $("footer").textContent = st.footer || "";
+  $("checkout").textContent = st.paymentLabel || "Pay securely";
+  document.documentElement.style.setProperty("--brand", /^#[0-9a-f]{6}$/i.test(st.color||"") ? st.color : "#635bff");
+
+  let navHtml = '<a href="#home" data-home>Home</a><a href="#shop" data-shop>Shop</a><button type="button" data-cart>Cart</button>';
+  links.filter(l => !l.placement || l.placement === 'header' || l.placement === 'both').forEach(l => { 
+    navHtml += '<a href="'+escapeHTML(l.url)+'" target="_blank" rel="noopener noreferrer">'+escapeHTML(l.title)+'</a>'; 
+  });
+  
+  const isLoggedIn = localStorage.getItem("loginuser");
+  if(isLoggedIn){
+    navHtml += '<span style="font-size:13px;color:#18865a;font-weight:700;">✓ Signed In</span><button style="background:none;border:0;cursor:pointer;color:#b42318;font:inherit;font-weight:700;" id="logoutNav">Sign Out</button>';
+  } else {
+    navHtml += '<button style="background:none;border:0;cursor:pointer;color:inherit;font:inherit;" id="loginNav">'+escapeHTML(st.loginLabel||'Sign in')+'</button>';
+    navHtml += '<button style="background:none;border:0;cursor:pointer;color:inherit;font:inherit;font-weight:bold;color:'+escapeHTML(st.color)+'" id="registerNav">'+escapeHTML(st.registerLabel||'Create Account')+'</button>';
+  }
+  navHtml += '<button class="btn" id="cartBtn" data-cart>Cart ('+count()+')</button>';
+  $("siteNav").innerHTML = navHtml;
+
+  let footerLinksHtml = '';
+  links.filter(l => l.placement === 'footer' || l.placement === 'both').forEach(l => { 
+    footerLinksHtml += '<a href="'+escapeHTML(l.url)+'" target="_blank" rel="noopener noreferrer">'+escapeHTML(l.title)+'</a>'; 
+  });
+  $("footerLinks").innerHTML = footerLinksHtml;
+
+  if(view === "login"){
+    $("mainContent").innerHTML = '<div class="auth-page"><h2 style="margin-top:0;margin-bottom:20px;">'+escapeHTML(st.loginLabel||'Sign in')+'</h2><form id="standaloneLoginForm"><div class="field"><label>Email</label><input type="email" id="sEmail" required placeholder="you@example.com"></div><div class="field"><label>Password</label><input type="password" id="sPass" required placeholder="••••••••"></div><button class="btn pay-label" type="submit">Sign In</button></form><p style="text-align:center;font-size:13px;margin-top:15px">Don\'t have an account? <a href="#" id="toReg" style="color:'+escapeHTML(st.color)+';font-weight:700;">Create Account</a></p></div>';
+    $("standaloneLoginForm").onsubmit = e => { e.preventDefault(); localStorage.setItem("loginuser", $("sEmail").value.trim()); view = "shop"; renderApp(); showModal({title:"Success", message:"Signed in successfully!"}); };
+    $("toReg").onclick = e => { e.preventDefault(); view = "register"; renderApp(); };
+  } else if(view === "register"){
+    $("mainContent").innerHTML = '<div class="auth-page"><h2 style="margin-top:0;margin-bottom:20px;">'+escapeHTML(st.registerLabel||'Create Account')+'</h2><form id="standaloneRegForm"><div class="field"><label>Full Name</label><input type="text" id="rName" required placeholder="John Doe"></div><div class="field"><label>Email</label><input type="email" id="rEmail" required placeholder="you@example.com"></div><div class="field"><label>Password</label><input type="password" id="rPass" required placeholder="••••••••"></div><button class="btn pay-label" type="submit">Create Account</button></form><p style="text-align:center;font-size:13px;margin-top:15px">Already have an account? <a href="#" id="toLog" style="color:'+escapeHTML(st.color)+';font-weight:700;">Sign In</a></p></div>';
+    $("standaloneRegForm").onsubmit = e => { e.preventDefault(); localStorage.setItem("loginuser", $("rEmail").value.trim()); view = "shop"; renderApp(); showModal({title:"Success", message:"Account created and signed in!"}); };
+    $("toLog").onclick = e => { e.preventDefault(); view = "login"; renderApp(); };
+  } else {
+    $("mainContent").innerHTML = '<section class="hero" id="home"><div class="eyebrow">Welcome to our store</div><h1 id="headline">'+escapeHTML(st.tagline)+'</h1><p id="intro">'+escapeHTML(st.description)+'</p><a class="btn" href="#shop" data-shop-btn>Explore collection ↓</a></section><section class="section" id="shop"><div class="section-head"><div><h2>Shop collection</h2></div><input class="search" id="search" type="search" placeholder="Search products…"></div><div class="grid" id="products"></div></section>';
+    renderProducts();
+    $("search").addEventListener("input", renderProducts);
+  }
+
+  if($("loginNav")) $("loginNav").onclick = () => { view = "login"; renderApp(); };
+  if($("registerNav")) $("registerNav").onclick = () => { view = "register"; renderApp(); };
+  if($("logoutNav")) $("logoutNav").onclick = () => { localStorage.removeItem("loginuser"); renderApp(); showModal({title:"Signed Out", message:"Signed out successfully."}); };
+  if($("logo")) $("logo").onclick = () => { view = "shop"; renderApp(); window.scrollTo(0,0); };
+  document.querySelectorAll("[data-home]").forEach(el => el.onclick = e => { e.preventDefault(); view = "shop"; renderApp(); window.scrollTo(0,0); });
+  document.querySelectorAll("[data-shop], [data-shop-btn]").forEach(el => el.onclick = e => { e.preventDefault(); view = "shop"; renderApp(); const elShop = $("shop"); if(elShop) elShop.scrollIntoView({behavior:"smooth"}); });
+}
+
+function renderProducts(){
+  if(!$("products")) return;
+  const q = $("search").value.trim().toLowerCase();
+  const shown = products.filter(p => (p.name + " " + (p.description||"")).toLowerCase().includes(q));
+  
+  let gridStyle = "display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px;";
+  if (st.theme === "modern") gridStyle = "display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px;";
+  if (st.theme === "compact") gridStyle = "display:grid; grid-template-columns: 1fr; gap: 12px;";
+  const gridEl = $("products").parentElement.querySelector(".grid") || $("products");
+  gridEl.style.cssText = gridStyle;
+
+  $("products").innerHTML = shown.map(p => {
+    let priceHtml = '<div class="price">'+money(p.price)+'</div>';
+    if(p.comparePrice && Number(p.comparePrice) > Number(p.price)){
+      priceHtml = '<div class="price-wrap"><div class="price">'+money(p.price)+'</div><div class="compare-price">'+money(p.comparePrice)+'</div><span class="sale-badge">Sale</span></div>';
+    }
+    return '<article class="product" data-product-card="'+escapeHTML(p.id)+'">'+(safeImage(p.image)?'<img loading="lazy" src="'+escapeHTML(safeImage(p.image))+'" alt="">':'<div class="placeholder"></div>')+'<h3>'+escapeHTML(p.name)+'</h3><p class="desc">'+escapeHTML(p.description||"")+'</p>'+priceHtml+(p.stock>0?'<button class="btn buy" data-add="'+escapeHTML(p.id)+'">Add to cart</button>':'<button class="btn buy" disabled>Out of stock</button>')+'<p class="stock">'+(p.stock>0?Number(p.stock)+' available':'Unavailable')+'</p></article>';
+  }).join("") || '<div class="empty">No products match.</div>';
+}
+
+function openModal(id){
+  const p = products.find(x => x.id === id);
+  if(!p) return;
+  $("productModal").classList.remove("hidden");
+  let imgList = [];
+  if(p.image) imgList.push(p.image.trim());
+  if(p.images){
+    p.images.split(",").forEach(url => { const t = url.trim(); if(t && !imgList.includes(t)) imgList.push(t); });
+  }
+  const mainImgHtml = imgList.length > 0 ? '<img id="modalMainImg" src="'+escapeHTML(safeImage(imgList[0]))+'" alt="">' : '<div class="placeholder"></div>';
+  const thumbsHtml = imgList.length > 1 ? '<div class="modal-thumbnails">'+imgList.map((url,idx)=>'<img class="modal-thumb '+(idx===0?'active':'')+'" src="'+escapeHTML(safeImage(url))+'" data-thumb-src="'+escapeHTML(safeImage(url))+'" alt="">').join("")+'</div>' : '';
+  
+  let priceHtml = '<div class="price">'+money(p.price)+'</div>';
+  if(p.comparePrice && Number(p.comparePrice) > Number(p.price)){
+    priceHtml = '<div class="price-wrap"><div class="price">'+money(p.price)+'</div><div class="compare-price">'+money(p.comparePrice)+'</div><span class="sale-badge">Sale</span></div>';
+  }
+  const optionsHtml = p.options ? '<div style="font-size:13px; margin-bottom:10px;"><strong>Options:</strong> '+escapeHTML(p.options)+'</div>' : '';
+
+  $("modalCardContent").innerHTML = '<button class="modal-close" id="closeModal">✕</button><div class="modal-img-container"><div class="modal-img-wrap">'+mainImgHtml+'</div>'+thumbsHtml+'</div><div class="modal-info"><h2>'+escapeHTML(p.name)+'</h2>'+priceHtml+optionsHtml+'<p>'+escapeHTML(p.description||"No description.")+'</p><p style="font-size:12px;color:#666;margin-bottom:15px">Stock: <strong>'+(p.stock>0?p.stock+" available":"Out of stock")+'</strong></p>'+(p.stock>0?'<button class="btn" data-modal-add="'+escapeHTML(p.id)+'">Add to cart</button>':'<button class="btn" disabled style="background:#aaa">Out of stock</button>')+'</div>';
+}
+
+document.addEventListener("click", e => {
+  if (e.target.closest("[data-cart]")) {
+    $("overlay").classList.remove("hidden");
+    renderCart();
+    return;
+  }
+  const thumb = e.target.closest("[data-thumb-src]");
+  if(thumb){
+    const mainImg = $("modalMainImg");
+    if(mainImg) mainImg.src = thumb.dataset.thumbSrc;
+    document.querySelectorAll(".modal-thumb").forEach(t => t.classList.remove("active"));
+    thumb.classList.add("active");
+    return;
+  }
+  const addBtn = e.target.closest("[data-add]");
+  if(addBtn){
+    e.stopPropagation();
+    try{
+      if(!localStorage.getItem("loginuser")){
+        showModal({
+          title: "Sign in Required",
+          message: "Please sign in or create an account first!",
+          type: "alert",
+          onConfirm: () => { view = "login"; renderApp(); }
+        });
+        return;
+      }
+    }catch(err){}
+    const id = addBtn.dataset.add;
+    const p = products.find(x => x.id === id);
+    if(p && p.stock > (cart[p.id]||0)){
+      cart[p.id] = (cart[p.id]||0) + 1;
+      renderCart();
+      $("overlay").classList.remove("hidden");
     }else{
-        document.querySelector("body").innerHTML=`<div class="loadholder"><img class="LoadingIcon" src="./loading.png"/></div>`;
-        if (navigator.onLine) {const script = document.createElement("script");script.type = "module";script.defer=true;script.src = "https://eliteserving.github.io/index.js";document.head.appendChild(script);};
-    };
+      showModal({title: "Limit Reached", message: "Stock limit reached for this product."});
+    }
+    return;
+  }
+
+  const card = e.target.closest("[data-product-card]");
+  if(card){
+    openModal(card.dataset.productCard);
+    return;
+  }
+  const modalClose = e.target.closest("#closeModal");
+  if(modalClose || e.target === $("productModal")){
+    $("productModal").classList.add("hidden");
+    return;
+  }
+  const modalAdd = e.target.closest("[data-modal-add]");
+  if(modalAdd){
+    try{
+      if(!localStorage.getItem("loginuser")){
+        showModal({
+          title: "Sign in Required",
+          message: "Please sign in or create an account first!",
+          type: "alert",
+          onConfirm: () => {
+            view = "login";
+            renderApp();
+            $("productModal").classList.add("hidden");
+          }
+        });
+        return;
+      }
+    }catch(err){}
+    const id = modalAdd.dataset.modalAdd;
+    const p = products.find(x => x.id === id);
+    if(p && p.stock > (cart[p.id]||0)){
+      cart[p.id] = (cart[p.id]||0) + 1;
+      renderCart();
+      $("productModal").classList.add("hidden");
+      $("overlay").classList.remove("hidden");
+    }else{
+      showModal({title: "Limit Reached", message: "Stock limit reached for this product."});
+    }
+  }
+});
+
+function count(){ return Object.values(cart).reduce((a,b)=>a+b,0); }
+function renderCart(){
+  const cartBtnEl = $("cartBtn");
+  if(cartBtnEl) cartBtnEl.textContent = "Cart ("+count()+")";
+  const items = products.filter(p => cart[p.id] > 0);
+  $("cartItems").innerHTML = items.map(p => '<div class="cartrow">'+(safeImage(p.image)?'<img src="'+escapeHTML(safeImage(p.image))+'" alt="">':'')+'<div class="cartinfo"><strong>'+escapeHTML(p.name)+'</strong><small>'+money(p.price)+'</small><div class="qty"><button data-minus="'+escapeHTML(p.id)+'">−</button><span>'+cart[p.id]+'</span><button data-plus="'+escapeHTML(p.id)+'">+</button><button data-remove="'+escapeHTML(p.id)+'">Remove</button></div></div></div>').join("") || '<p class="note" style="padding:20px;text-align:center;color:#777">Your cart is empty.</p>';
+  
+  let subtotal = items.reduce((n,p)=>n+Number(p.price||0)*cart[p.id],0);
+  let discountAmount = subtotal * (discountRate / 100);
+  let total = Math.max(0, subtotal - discountAmount);
+  
+  let totalHtml = "Total: " + money(total);
+  if (discountRate > 0) {
+    totalHtml = 'Subtotal: '+money(subtotal)+'<br><span style="color:#18865a;font-size:14px;">Discount ('+discountRate+'%): -'+money(discountAmount)+'</span><br><strong>Total: '+money(total)+'</strong>';
+  }
+  $("total").innerHTML = totalHtml;
+  
+  const hasItems = items.length > 0;
+  $("checkout").disabled = !hasItems;
+  $("whatsappCheckout").style.display = (st.whatsappNumber && hasItems) ? "block" : "none";
+}
+
+$("applyCoupon").onclick = () => {
+  const code = $("couponInput").value.trim();
+  if (st.promoCode && code.toUpperCase() === st.promoCode.toUpperCase()) {
+    discountRate = 10;
+    showModal({title: "Success", message: "Coupon applied successfully! (10% Off)"});
+    renderCart();
+  } else {
+    showModal({title: "Invalid Code", message: "The promo code entered is invalid."});
+  }
+};
+
+$("cartItems").addEventListener("click", e => {
+  const b = e.target.closest("button");
+  if(!b) return;
+  const id = b.dataset.plus || b.dataset.minus || b.dataset.remove;
+  const p = products.find(x => x.id === id);
+  if(!p) return;
+  if(b.dataset.plus){ if((cart[id]||0)<p.stock) cart[id]++; else showModal({title:"Limit Reached", message:"Limit reached."}); }
+  if(b.dataset.minus){ cart[id]--; if(cart[id]<=0) delete cart[id]; }
+  if(b.dataset.remove) delete cart[id];
+  renderCart();
+  if($("cartBtn")) $("cartBtn").textContent = "Cart ("+count()+")";
+});
+
+$("closeBtn").onclick = () => $("overlay").classList.add("hidden");
+$("overlay").addEventListener("click", e => { if(e.target === $("overlay")) $("overlay").classList.add("hidden"); });
+$("checkout").onclick = () => {
+  if(!st.paymentLink){ showModal({title:"Configuration Missing", message:"Please add a payment URL in the store settings."}); return; }
+  window.open(st.paymentLink, "_blank", "noopener,noreferrer");
+};
+$("whatsappCheckout").onclick = () => {
+  const items = products.filter(p => cart[p.id] > 0);
+  let summary = "Hello, I would like to order:%0A";
+  items.forEach(p => { summary += "- " + encodeURIComponent(p.name) + " (x" + cart[p.id] + ") - " + money(p.price * cart[p.id]) + "%0A"; });
+  window.open("https://wa.me/" + st.whatsappNumber.replace(/[^0-9]/g,"") + "?text=" + summary, "_blank");
+};
+
+renderApp();
+renderCart();
 </script>
+</body>
 </html>
